@@ -7,11 +7,14 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito
+import org.mockito.BDDMockito.*
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
 @ExtendWith(SpringExtension::class)
@@ -29,9 +32,11 @@ internal class DishControllerTest {
 
     @BeforeEach
     fun setup() {
-        BDDMockito.`when`(
-            dishService.search(0, 1)
-        ).thenReturn(Flux.just(dish))
+        `when`(dishService.search(0, 1))
+                .thenReturn(Flux.just(dish))
+
+        `when`(dishService.get(ArgumentMatchers.anyLong()))
+                .thenReturn(Mono.just(dish))
     }
 
 
@@ -44,8 +49,14 @@ internal class DishControllerTest {
                 .verifyComplete()
     }
 
-
-
+    @Test
+    @DisplayName("getById returns a Mono with anime when it exists")
+    fun findById_returnMonoOfDishWhenSuccessful() {
+        StepVerifier.create(dishController.get(1))
+                .expectSubscription()
+                .expectNext(dish)
+                .verifyComplete()
+    }
 
 
 }

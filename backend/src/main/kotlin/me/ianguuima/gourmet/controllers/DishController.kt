@@ -14,6 +14,11 @@ class DishController(
         val dishService: DishService
 ) {
 
+    @GetMapping("/{id}")
+    fun get(@PathVariable id : Long) : Mono<Dish> {
+        return dishService.get(id)
+    }
+
     @PostMapping
     fun save(@RequestBody @Valid dish: Dish): Mono<Dish> {
         return dishService.save(dish)
