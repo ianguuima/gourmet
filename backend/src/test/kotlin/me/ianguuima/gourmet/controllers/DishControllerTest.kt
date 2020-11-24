@@ -24,7 +24,7 @@ internal class DishControllerTest {
     @Mock
     lateinit var dishService: DishService
 
-    val dish = DishCreator.createValidDish()
+    private val dish = DishCreator.createValidDish()
 
 
     @BeforeEach
@@ -43,6 +43,8 @@ internal class DishControllerTest {
                 .expectNext(dish)
                 .verifyComplete()
     }
+
+
 
 
 
