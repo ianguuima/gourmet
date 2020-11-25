@@ -16,3 +16,7 @@ server:
   error:
     include-message: always
     include-exception: true
+
+sonic:
+  address: localhost
+  password: SecretPassword

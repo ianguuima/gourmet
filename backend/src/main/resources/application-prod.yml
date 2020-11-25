@@ -4,7 +4,12 @@ spring:
     username: ${DB_USER}
     password: ${DB_PASSWORD}
 
+sonic:
+  address: ${SONIC_HOST}
+  password: ${SONIC_PASSWORD}
+
+
 server:
   error:
     include-message: always
-    include-exception: false
+    include-exception: true

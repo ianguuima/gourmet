@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.*
 import org.mockito.BDDMockito.*
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Import
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.web.server.ResponseStatusException
@@ -20,9 +22,11 @@ import reactor.test.StepVerifier
 @ExtendWith(SpringExtension::class)
 internal class DishServiceTest {
 
-
     @InjectMocks
     lateinit var dishService: DishService
+
+    @Mock
+    lateinit var sonicService: SonicService
 
     @Mock
     lateinit var dishRepository: DishRepository

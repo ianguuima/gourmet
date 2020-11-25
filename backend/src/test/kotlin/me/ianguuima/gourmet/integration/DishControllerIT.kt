@@ -5,6 +5,7 @@ import me.ianguuima.gourmet.exceptions.DishNotFoundException
 import me.ianguuima.gourmet.models.Dish
 import me.ianguuima.gourmet.repositories.DishRepository
 import me.ianguuima.gourmet.services.DishService
+import me.ianguuima.gourmet.services.SonicService
 import me.ianguuima.gourmet.util.DishCreator
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Import
+import org.springframework.context.annotation.ImportResource
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
@@ -26,7 +28,7 @@ import reactor.core.publisher.Mono
 
 @ExtendWith
 @WebFluxTest
-@Import(DishService::class)
+@Import(DishService::class, SonicService::class)
 class DishControllerIT {
 
     @MockBean

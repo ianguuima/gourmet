@@ -7,19 +7,43 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.util.ArrayList
 import javax.validation.Valid
 
-@Controller
+@RestController
 @CrossOrigin
-@RequestMapping(value = ["dish"])
+@RequestMapping(value = ["/dish"])
 class DishController(
         val dishService: DishService,
 ) {
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id : Long) : Mono<Dish> {
+    fun get(@PathVariable id: Long): Mono<Dish> {
         return dishService.get(id)
     }
+
+    @GetMapping
+    fun findAll(
+            @RequestParam(value = "page", required = false, defaultValue = "0") page: Int,
+            @RequestParam(value = "size", required = false, defaultValue = "5") size: Int
+    ): Flux<Dish> {
+        return dishService.search(page, size)
+    }
+
+    @GetMapping("/suggest")
+    fun suggest(
+            @RequestParam(value = "term", required = true) term : String,
+    ): ArrayList<String> {
+        return dishService.sonicService.suggest(term)
+    }
+
+    @GetMapping("/search")
+    fun search(
+            @RequestParam(value = "term", required = true) term : String,
+    ): ArrayList<String> {
+        return dishService.sonicService.query(term)
+    }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -27,20 +51,14 @@ class DishController(
         return dishService.save(dish)
     }
 
-    @GetMapping
-    fun findAll(@RequestParam(value = "page", required = false, defaultValue = "0") page: Int,
-                @RequestParam(value = "size", required = false, defaultValue = "5") size: Int
-    ): Flux<Dish> {
-        return dishService.search(page, size)
-    }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id : Long, @RequestBody @Valid dish : Dish): Mono<Dish> {
+    fun update(@PathVariable id: Long, @RequestBody @Valid dish: Dish): Mono<Dish> {
         return dishService.update(dish.copy(id = id))
     }
 
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id : Long): Mono<Void> {
+    fun delete(@PathVariable id: Long): Mono<Void> {
         return dishService.delete(id)
     }
 

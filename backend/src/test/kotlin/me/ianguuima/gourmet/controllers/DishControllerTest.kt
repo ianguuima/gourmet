@@ -2,6 +2,7 @@ package me.ianguuima.gourmet.controllers
 
 import com.nhaarman.mockito_kotlin.any
 import me.ianguuima.gourmet.services.DishService
+import me.ianguuima.gourmet.services.SonicService
 import me.ianguuima.gourmet.util.DishCreator
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -11,12 +12,14 @@ import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.`when`
 import org.mockito.InjectMocks
 import org.mockito.Mock
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
 @ExtendWith(SpringExtension::class)
+@Import(SonicService::class)
 internal class DishControllerTest {
 
 
