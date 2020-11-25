@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.support.WebExchangeBindException
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -28,7 +32,14 @@ class ConstraintValidatorHandler {
         val result = ex.bindingResult
         val fieldErrors = result.fieldErrors
 
-        val error = FieldError("/${result.objectName}", HttpStatus.BAD_REQUEST.value(), "A validation error happened!")
+        val timestamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)
+
+        val error = FieldError(
+                timestamp,
+                "/${result.objectName}",
+                HttpStatus.BAD_REQUEST.value(),
+                "A validation error happened!"
+        )
 
         for (fieldError in fieldErrors) {
             error.addFieldError(fieldError.field, fieldError.defaultMessage ?: "An error happened!")
@@ -38,7 +49,7 @@ class ConstraintValidatorHandler {
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    class FieldError(val path: String, val status: Int, val message: String) {
+    class FieldError(val timestamp: String, val path: String, val status: Int, val message: String) {
 
         val errors: MutableList<CustomFieldError> = ArrayList()
 
