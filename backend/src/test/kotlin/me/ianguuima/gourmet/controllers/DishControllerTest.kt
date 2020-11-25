@@ -26,7 +26,7 @@ internal class DishControllerTest {
     @Mock
     lateinit var dishService: DishService
 
-    private val dish = DishCreator.createValidDish()
+    private val dish = DishCreator.createDish()
 
 
     @BeforeEach
@@ -69,7 +69,7 @@ internal class DishControllerTest {
     @Test
     @DisplayName("save a dish when successful")
     fun save_createDish_whenSuccessful() {
-        val dishToBeSaved = DishCreator.createValidDish()
+        val dishToBeSaved = DishCreator.createDish()
 
         StepVerifier.create(dishController.save(dishToBeSaved))
                 .expectSubscription()
@@ -80,7 +80,7 @@ internal class DishControllerTest {
     @Test
     @DisplayName("save updated dish when successful")
     fun update_saveUpdatedDish_WhenSuccessful() {
-        StepVerifier.create(dishController.update(1, DishCreator.createValidDish()))
+        StepVerifier.create(dishController.update(1, DishCreator.createDish()))
                 .expectSubscription()
                 .verifyComplete()
     }

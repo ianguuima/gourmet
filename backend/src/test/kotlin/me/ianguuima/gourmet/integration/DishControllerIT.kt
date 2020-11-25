@@ -1,5 +1,6 @@
 package me.ianguuima.gourmet.integration
 
+import com.nhaarman.mockito_kotlin.any
 import me.ianguuima.gourmet.exceptions.DishNotFoundException
 import me.ianguuima.gourmet.models.Dish
 import me.ianguuima.gourmet.repositories.DishRepository
@@ -16,15 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Import
+import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
-import reactor.core.publisher.Mono
-import reactor.test.StepVerifier
-import com.nhaarman.mockito_kotlin.any
-import org.springframework.http.MediaType
-import org.springframework.web.reactive.function.BodyInserter
 import org.springframework.web.reactive.function.BodyInserters
-import java.awt.PageAttributes
+import reactor.core.publisher.Mono
 
 
 @ExtendWith
@@ -38,7 +35,7 @@ class DishControllerIT {
     @Autowired
     lateinit var testClient: WebTestClient
 
-    private val dish = DishCreator.createValidDish()
+    private val dish = DishCreator.createDish()
 
     @BeforeEach
     fun setup() {
@@ -111,7 +108,7 @@ class DishControllerIT {
     @Test
     @DisplayName("save should return created when create a dish")
     fun save_shouldReturnCreated_WhenCreateADish() {
-        val dishToBeSaved = DishCreator.createValidDish()
+        val dishToBeSaved = DishCreator.createDish()
 
         testClient
                 .post()
