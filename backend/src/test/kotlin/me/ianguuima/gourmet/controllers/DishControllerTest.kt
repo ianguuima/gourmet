@@ -1,15 +1,14 @@
 package me.ianguuima.gourmet.controllers
 
+import com.nhaarman.mockito_kotlin.any
 import me.ianguuima.gourmet.services.DishService
 import me.ianguuima.gourmet.util.DishCreator
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.ArgumentMatchers
-import org.mockito.BDDMockito
-import org.mockito.BDDMockito.*
+import org.mockito.BDDMockito.`when`
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -37,6 +36,12 @@ internal class DishControllerTest {
 
         `when`(dishService.get(ArgumentMatchers.anyLong()))
                 .thenReturn(Mono.just(dish))
+
+        `when`(dishService.save(any()))
+                .thenReturn(Mono.just(dish))
+
+        `when`(dishService.update(dish))
+                .thenReturn(Mono.empty())
     }
 
 
@@ -50,11 +55,30 @@ internal class DishControllerTest {
     }
 
     @Test
-    @DisplayName("getById returns a Mono with anime when it exists")
-    fun findById_returnMonoOfDishWhenSuccessful() {
+    @DisplayName("getById returns a Mono with dish when it exists")
+    fun getById_returnMonoOfDishWhenSuccessful() {
         StepVerifier.create(dishController.get(1))
                 .expectSubscription()
                 .expectNext(dish)
+                .verifyComplete()
+    }
+
+    @Test
+    @DisplayName("save a dish when successful")
+    fun save_createDish_whenSuccessful() {
+        val dishToBeSaved = DishCreator.createValidDish()
+
+        StepVerifier.create(dishController.save(dishToBeSaved))
+                .expectSubscription()
+                .expectNext(dish)
+                .verifyComplete()
+    }
+
+    @Test
+    @DisplayName("save updated dish and returns empty mono if successful")
+    fun update_saveUpdatedDish_WhenSuccessful() {
+        StepVerifier.create(dishController.update(1, DishCreator.createValidDish()))
+                .expectSubscription()
                 .verifyComplete()
     }
 

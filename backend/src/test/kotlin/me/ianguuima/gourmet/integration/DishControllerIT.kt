@@ -19,6 +19,11 @@ import org.springframework.context.annotation.Import
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
+import com.nhaarman.mockito_kotlin.any
+import org.springframework.http.MediaType
+import org.springframework.web.reactive.function.BodyInserters
+import java.awt.PageAttributes
 
 
 @ExtendWith
@@ -37,6 +42,9 @@ class DishControllerIT {
     @BeforeEach
     fun setup() {
         `when`(dishRepository.findById(ArgumentMatchers.anyLong()))
+                .thenReturn(Mono.just(dish))
+
+        `when`(dishRepository.save(any()))
                 .thenReturn(Mono.just(dish))
     }
 
@@ -97,6 +105,21 @@ class DishControllerIT {
                 .exchange()
                 .expectStatus().isNotFound
                 .expectBody<DishNotFoundException>()
+    }
+
+    @Test
+    fun save_shouldReturnOk_WhenCreateADish() {
+        val dishToBeSaved = DishCreator.createValidDish()
+
+        testClient
+                .post()
+                .uri("/dish")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(dishToBeSaved))
+                .exchange()
+                .expectStatus().isCreated
+                .expectBody<Dish>()
+                .isEqualTo(dish)
     }
 
 }

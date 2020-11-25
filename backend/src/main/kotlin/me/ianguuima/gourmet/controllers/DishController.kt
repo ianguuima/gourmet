@@ -2,6 +2,7 @@ package me.ianguuima.gourmet.controllers
 
 import me.ianguuima.gourmet.models.Dish
 import me.ianguuima.gourmet.services.DishService
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -20,6 +21,7 @@ class DishController(
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun save(@RequestBody @Valid dish: Dish): Mono<Dish> {
         return dishService.save(dish)
     }
