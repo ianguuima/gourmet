@@ -42,6 +42,9 @@ internal class DishControllerTest {
 
         `when`(dishService.update(dish))
                 .thenReturn(Mono.empty())
+
+        `when`(dishService.delete(ArgumentMatchers.anyLong()))
+                .thenReturn(Mono.empty())
     }
 
 
@@ -75,12 +78,19 @@ internal class DishControllerTest {
     }
 
     @Test
-    @DisplayName("save updated dish and returns empty mono if successful")
-    fun update_saveUpdatedDish_WhenSuccessful() {
+    @DisplayName("save updated dish when successful")
+    fun update_saveUpdatedDi        sh_WhenSuccessful() {
         StepVerifier.create(dishController.update(1, DishCreator.createValidDish()))
                 .expectSubscription()
                 .verifyComplete()
     }
 
+    @Test
+    @DisplayName("delete dish when successful")
+    fun delete_removesDish_WhenSuccessful() {
+        StepVerifier.create(dishController.delete(1))
+                .expectSubscription()
+                .verifyComplete()
+    }
 
 }
