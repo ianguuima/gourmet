@@ -22,6 +22,7 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import com.nhaarman.mockito_kotlin.any
 import org.springframework.http.MediaType
+import org.springframework.web.reactive.function.BodyInserter
 import org.springframework.web.reactive.function.BodyInserters
 import java.awt.PageAttributes
 
@@ -108,7 +109,8 @@ class DishControllerIT {
     }
 
     @Test
-    fun save_shouldReturnOk_WhenCreateADish() {
+    @DisplayName("save should return created when create a dish")
+    fun save_shouldReturnCreated_WhenCreateADish() {
         val dishToBeSaved = DishCreator.createValidDish()
 
         testClient
@@ -121,5 +123,33 @@ class DishControllerIT {
                 .expectBody<Dish>()
                 .isEqualTo(dish)
     }
+
+    @Test
+    @DisplayName("update should return ok when update a dish")
+    fun update_shouldReturnOk_WhenCreateADish() {
+        testClient
+                .put()
+                .uri("/dish/{id}", 1)
+                .body(BodyInserters.fromValue(dish))
+                .exchange()
+                .expectStatus().isOk
+                .expectBody<Dish>()
+                .isEqualTo(dish)
+    }
+
+    @Test
+    @DisplayName("update should return ok when update a dish")
+    fun delete_shouldReturnError_WhenDishNotExists() {
+        `when`(dishRepository.findById(BDDMockito.anyLong()))
+                .thenReturn(Mono.empty())
+
+        testClient
+                .delete()
+                .uri("/dish/{id}", 1)
+                .exchange()
+                .expectStatus().isNotFound
+                .expectBody<DishNotFoundException>()
+    }
+
 
 }

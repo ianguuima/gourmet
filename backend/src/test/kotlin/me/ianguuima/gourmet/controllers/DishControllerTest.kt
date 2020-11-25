@@ -79,7 +79,7 @@ internal class DishControllerTest {
 
     @Test
     @DisplayName("save updated dish when successful")
-    fun update_saveUpdatedDi        sh_WhenSuccessful() {
+    fun update_saveUpdatedDish_WhenSuccessful() {
         StepVerifier.create(dishController.update(1, DishCreator.createValidDish()))
                 .expectSubscription()
                 .verifyComplete()
