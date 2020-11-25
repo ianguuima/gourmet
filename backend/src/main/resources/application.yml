@@ -14,4 +14,4 @@ logging:
 server:
   error:
     include-message: always
-    include-exception: false
+    include-exception: true
