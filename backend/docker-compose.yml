@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+  app:
+    container_name: app-gourmet
+    image: app-gourmet
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbpostgresql
+    environment:
+      DB_HOST: 172.29.64.1
+      DB_PORT: 5432
+      DB_NAME: gourmet
+      DB_USER: postgres
+      DB_PASSWORD: root
+  dbpostgresql:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=gourmet
+volumes:
+  postgres-data:
