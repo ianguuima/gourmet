@@ -1,0 +1,22 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/gourmet
+    username: postgres
+    password: root
+
+logging:
+  level:
+    org:
+      springframework:
+        cache: trace
+        data:
+          r2dbc: trace
+
+server:
+  error:
+    include-message: always
+    include-exception: true
+
+sonic:
+  address: localhost
+  password: SecretPassword
