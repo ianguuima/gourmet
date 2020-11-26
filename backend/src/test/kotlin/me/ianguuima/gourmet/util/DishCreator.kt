@@ -4,16 +4,18 @@ import me.ianguuima.gourmet.models.Dish
 
 class DishCreator {
 
-    // object modder, object mapper
-
     companion object {
-
-        fun createDish() : Dish {
-            return Dish(1, "Feijão Tropeiro", arrayListOf("Linguiça", "Feijão", "Couve"))
-        }
 
         fun createUpdatedDish() : Dish {
             return Dish(1, "Lasanha", arrayListOf("Queijo", "Macarrão", "Calabresa"))
+        }
+
+        fun createDish() : Dish {
+            return Dish(2, "Feijão Tropeiro", arrayListOf("Linguiça", "Feijão", "Couve"))
+        }
+
+        fun createValidationErrorDish(): Dish {
+            return Dish(3, "Tes", arrayListOf())
         }
 
     }

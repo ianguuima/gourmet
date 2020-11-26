@@ -95,6 +95,26 @@
 			<version>1.0.1</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-kotlin</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.1.5</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 	<build>
@@ -111,6 +131,7 @@
 				<configuration>
 					<args>
 						<arg>-Xjsr305=strict</arg>
+						<arg>-Xemit-jvm-type-annotations</arg>
 					</args>
 					<compilerPlugins>
 						<plugin>spring</plugin>

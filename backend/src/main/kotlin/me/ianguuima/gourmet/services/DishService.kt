@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
+
 @Service
 class DishService(
         val dishRepository: DishRepository,
@@ -39,17 +40,38 @@ class DishService(
             ).cache()
 
 
-    @CacheEvict(cacheNames = [cacheName], key = "#dish.id")
     fun save(dish: Dish): Mono<Dish> {
-        return dishRepository.save(dish).flatMap {
+        return dishRepository.existsByNameIgnoreCase(dish.name)
+                .flatMap {
+                    if (it) Mono.error(ResponseStatusException(HttpStatus.CONFLICT))
+                    else {
+
+                        dishRepository.save(dish).flatMap { createdDish ->
+                            sonicService.add(
+                                    createdDish.id,
+                                    "${createdDish.name}  ${createdDish.ingredients.joinToString(separator = " ")}"
+                            )
+                            Mono.just(createdDish)
+                        }
+
+                    }
+                }
+    }
+
+    @CachePut(cacheNames = [cacheName], key = "#dish.id")
+    fun update(dish: Dish): Mono<Dish> {
+        return get(dish.id).flatMap { dishRepository.save(dish) }.flatMap {
             sonicService.add(it.id, "${it.name}  ${it.ingredients.joinToString(separator = " ")}")
             Mono.just(it)
         }
     }
 
-    @CachePut(cacheNames = [cacheName], key = "#dish.id")
-    fun update(dish: Dish): Mono<Dish> = get(dish.id).flatMap { dishRepository.save(dish) }
-
     @CacheEvict(cacheNames = [cacheName], key = "#id")
-    fun delete(id: Long): Mono<Void> = get(id).flatMap { dishRepository.deleteById(it.id) }
+    fun delete(id: Long): Mono<Void> {
+        return get(id).flatMap {
+            dishRepository.deleteById(it.id)
+            sonicService.remove(it.id)
+            Mono.empty()
+        }
+    }
 }

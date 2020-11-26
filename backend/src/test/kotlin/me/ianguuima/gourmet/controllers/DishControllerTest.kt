@@ -12,19 +12,21 @@ import org.mockito.ArgumentMatchers
 import org.mockito.BDDMockito.`when`
 import org.mockito.InjectMocks
 import org.mockito.Mock
-import org.springframework.context.annotation.Import
 import org.springframework.test.context.junit.jupiter.SpringExtension
+import org.springframework.web.bind.support.WebExchangeBindException
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
 @ExtendWith(SpringExtension::class)
-@Import(SonicService::class)
 internal class DishControllerTest {
 
 
     @InjectMocks
     lateinit var dishController: DishController
+
+    @Mock
+    lateinit var sonicService: SonicService
 
     @Mock
     lateinit var dishService: DishService
@@ -83,7 +85,7 @@ internal class DishControllerTest {
     @Test
     @DisplayName("save updated dish when successful")
     fun update_saveUpdatedDish_WhenSuccessful() {
-        StepVerifier.create(dishController.update(1, DishCreator.createDish()))
+        StepVerifier.create(dishController.update(2, DishCreator.createDish()))
                 .expectSubscription()
                 .verifyComplete()
     }
