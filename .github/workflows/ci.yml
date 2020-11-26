@@ -21,7 +21,7 @@ jobs:
       with:
         java-version: 1.8
     - name: Compile
-      run: cd back-end/ && mvn compile
+      run: mvn compile
       working-directory: ${{env.working-directory}}
     - name: Run the tests
       run: mvn test
