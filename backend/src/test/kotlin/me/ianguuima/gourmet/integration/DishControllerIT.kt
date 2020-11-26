@@ -23,6 +23,7 @@ import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
+import java.lang.RuntimeException
 
 
 @ExtendWith
@@ -103,7 +104,7 @@ class DishControllerIT {
                 .uri("/dish/{id}", 1)
                 .exchange()
                 .expectStatus().isNotFound
-                .expectBody<ResponseStatusException>()
+                .expectBody<RuntimeException>()
     }
 
     @Test
@@ -146,7 +147,7 @@ class DishControllerIT {
                 .uri("/dish/{id}", 1)
                 .exchange()
                 .expectStatus().isNotFound
-                .expectBody<ResponseStatusException>()
+                .expectBody<RuntimeException>()
     }
 
 
