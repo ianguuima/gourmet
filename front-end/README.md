@@ -19,6 +19,12 @@ Utilizei o Axios para consumir o end-point da minha API. Ele foi simples de usar
 A stack React + Typescript + Axios encaixa muito bem para aplicação simples. A partir do momento em que a aplicação começa a crescer, a utilização de um bom cacheamento
 local e um bom gerenciador de estado como o [Redux](https://redux.js.org/) se faz necessária.
 
+## 🌄 Imagens da Aplicação
+
+![img-1](https://imgur.com/8ujd4Hf.png)
+![img-2](https://imgur.com/KpWLR49.png)
+![img-3](https://imgur.com/b0bBRyR.png)
+
 ## ⚒ Executando a Aplicação <a name="running"></a>
 
 Executar uma aplicação React é muito simples. O tutorial conta com dois passos que te auxiliarão a compilar o projeto.
