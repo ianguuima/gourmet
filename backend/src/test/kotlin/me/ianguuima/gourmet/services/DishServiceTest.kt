@@ -42,6 +42,9 @@ internal class DishServiceTest {
 
         val updatedDish = DishCreator.createUpdatedDish()
 
+        `when`(dishRepository.existsByNameIgnoreCase(ArgumentMatchers.anyString()))
+                .thenReturn(Mono.just(false))
+
         `when`(dishRepository.save(updatedDish))
                 .thenReturn(Mono.just(updatedDish))
 

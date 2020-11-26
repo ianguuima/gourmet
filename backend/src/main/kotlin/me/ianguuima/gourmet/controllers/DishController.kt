@@ -62,7 +62,6 @@ class DishController(
         return dishService.sonicService.query(term)
     }
 
-
     @Operation(
             summary = "Create a new dish",
     )
@@ -71,7 +70,6 @@ class DishController(
     fun save(@RequestBody @Valid dish: Dish): Mono<Dish> {
         return dishService.save(dish)
     }
-
 
     @Operation(
             summary = "Update a dish",

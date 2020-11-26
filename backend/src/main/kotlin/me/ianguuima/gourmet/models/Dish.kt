@@ -16,6 +16,5 @@ data class Dish(
         val name: String,
 
         @field:NotEmpty(message = "The ingredients can't be empty.")
-     
         val ingredients: List<@Size(message = "The ingredient must have between 3 and 20 characters", min = 3, max = 20) String>
 )

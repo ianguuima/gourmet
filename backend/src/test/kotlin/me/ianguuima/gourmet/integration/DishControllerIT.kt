@@ -20,9 +20,11 @@ import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
+import org.springframework.web.bind.support.WebExchangeBindException
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 import java.lang.RuntimeException
 
 
@@ -44,9 +46,13 @@ class DishControllerIT {
         `when`(dishRepository.findById(ArgumentMatchers.anyLong()))
                 .thenReturn(Mono.just(dish))
 
-        `when`(dishRepository.save(any()))
+       `when`(dishRepository.save(any()))
                 .thenReturn(Mono.just(dish))
+
+        `when`(dishRepository.existsByNameIgnoreCase(any()))
+                .thenReturn(Mono.just(false))
     }
+
 
     @Test
     @DisplayName("findAll should return a list of dish when parameters is successfully provided.")
@@ -120,7 +126,38 @@ class DishControllerIT {
                 .exchange()
                 .expectStatus().isCreated
                 .expectBody<Dish>()
-                .isEqualTo(dish)
+    }
+
+    @Test
+    @DisplayName("save should return conflict when exists dish with the same name")
+    fun save_shouldReturnConflict_WhenExistsDishWithSameName() {
+        val dishToBeSaved = DishCreator.createDish()
+
+        `when`(dishRepository.existsByNameIgnoreCase(dishToBeSaved.name))
+                .thenReturn(Mono.just(true))
+
+        testClient
+                .post()
+                .uri("/dish")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(dishToBeSaved))
+                .exchange()
+                .expectStatus().isEqualTo(409)
+                .expectBody<RuntimeException>()
+    }
+
+    @Test
+    @DisplayName("save should return error when wrong validation is provided")
+    fun save_returnError_WhenWrongValidationProvided() {
+        val dishToValidate = DishCreator.createValidationErrorDish()
+
+        testClient.post()
+                .uri("/dish")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(dishToValidate))
+                .exchange()
+                .expectStatus().isBadRequest
+                .expectBody<RuntimeException>()
     }
 
     @Test
@@ -137,7 +174,16 @@ class DishControllerIT {
     }
 
     @Test
-    @DisplayName("update should return ok when update a dish")
+    @DisplayName("delete should return ok when provide a valid dish")
+    fun delete_shouldReturnOk_WhenDelete() {
+        testClient.delete()
+                .uri("/dish/{id}", 1)
+                .exchange()
+                .expectStatus().isOk
+    }
+
+    @Test
+    @DisplayName("delete should return error when dish does not exist")
     fun delete_shouldReturnError_WhenDishNotExists() {
         `when`(dishRepository.findById(BDDMockito.anyLong()))
                 .thenReturn(Mono.empty())
