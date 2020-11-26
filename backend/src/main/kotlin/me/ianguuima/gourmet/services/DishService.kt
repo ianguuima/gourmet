@@ -41,15 +41,31 @@ class DishService(
 
     @CacheEvict(cacheNames = [cacheName], key = "#dish.id")
     fun save(dish: Dish): Mono<Dish> {
-        return dishRepository.save(dish).flatMap {
+       return dishRepository.existsByName(dish.name).flatMap {
+            if (it) {
+                dishRepository.save(dish).flatMap {
+                    sonicService.add(it.id, "${it.name}  ${it.ingredients.joinToString(separator = " ")}")
+                    Mono.just(it)
+                }
+            }
+           Mono.error(ResponseStatusException(HttpStatus.CONFLICT, "There's already a dish with this name!"))
+        }
+    }
+
+    @CachePut(cacheNames = [cacheName], key = "#dish.id")
+    fun update(dish: Dish): Mono<Dish> {
+        return get(dish.id).flatMap { dishRepository.save(dish) }.flatMap {
             sonicService.add(it.id, "${it.name}  ${it.ingredients.joinToString(separator = " ")}")
             Mono.just(it)
         }
     }
 
-    @CachePut(cacheNames = [cacheName], key = "#dish.id")
-    fun update(dish: Dish): Mono<Dish> = get(dish.id).flatMap { dishRepository.save(dish) }
-
     @CacheEvict(cacheNames = [cacheName], key = "#id")
-    fun delete(id: Long): Mono<Void> = get(id).flatMap { dishRepository.deleteById(it.id) }
+    fun delete(id: Long): Mono<Void> {
+        return get(id).flatMap {
+            dishRepository.deleteById(it.id)
+            sonicService.remove(it.id)
+            Mono.empty()
+        }
+    }
 }

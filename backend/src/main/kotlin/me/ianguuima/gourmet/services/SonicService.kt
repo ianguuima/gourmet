@@ -36,6 +36,13 @@ class SonicService {
         control.consolidate()
     }
 
+    fun remove(id : Long) {
+        val factory = getChannelFactory()
+        val ingestChannel = factory.newIngestChannel()
+
+        ingestChannel.flusho(collection, bucket, "$id")
+    }
+
     fun suggest(term: String): ArrayList<String> {
         val factory = getChannelFactory()
         val search = factory.newSearchChannel()
