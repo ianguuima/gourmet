@@ -55,7 +55,7 @@ Para essa parte, é necessário que você possua o docker instalado em sua maqui
 
 **Windows**
 
-Clicando [aqui](https://hub.docker.com/) para baixar o Docker Hub e executá-lo na sua máquina.
+Clicando [aqui](https://hub.docker.com/) para baixar o Docker Hub e executa-lo na sua máquina.
 
 **Linux**
 
