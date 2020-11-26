@@ -10,6 +10,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./backend
 
     steps:
     - uses: actions/checkout@v2
@@ -20,11 +22,12 @@ jobs:
         java-version: 1.8
     - name: Compile
       run: mvn compile
-
+      working-directory: ${{env.working-directory}}
     - name: Run the tests
       run: mvn test
+      working-directory: ${{env.working-directory}}
     # Upload coverage result
     - name: Upload Coverage
       uses: codecov/codecov-action@v1
       with:
-        file: ./target/site/jacoco/jacoco.xml
+        file: ./backend/target/site/jacoco/jacoco.xml
