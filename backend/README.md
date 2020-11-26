@@ -78,5 +78,8 @@ docker-compose down
 
 ## 📜 Documentação <a name="docs"></a>
 
-As imagens abaixo representam a documentação da api. Se desejado uma representação e visualização mais completa, você pode acessar `HOST:8080/index.html`.
+As imagens abaixo representam a documentação da api. Se desejado uma representação e visualização mais completa, você pode acessar `HOST:8080/swagger-ui/`.
 
+![first_page](https://i.imgur.com/LbGfZfa.png)
+![second-page](https://i.imgur.com/TnkBhPg.png)
+![third-page](https://i.imgur.com/wIypsSJ.png)
