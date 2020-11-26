@@ -1,17 +1,13 @@
 package me.ianguuima.gourmet.services
 
-import me.ianguuima.gourmet.exceptions.DishNotFoundException
 import me.ianguuima.gourmet.repositories.DishRepository
 import me.ianguuima.gourmet.util.DishCreator
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.*
 import org.mockito.BDDMockito.*
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.context.annotation.Import
 import org.springframework.data.domain.PageRequest
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.web.server.ResponseStatusException
@@ -80,7 +76,7 @@ internal class DishServiceTest {
 
         StepVerifier.create(dishService.get(1))
                 .expectSubscription()
-                .expectError(DishNotFoundException::class.java)
+                .expectError(ResponseStatusException::class.java)
                 .verify()
     }
 
@@ -113,7 +109,7 @@ internal class DishServiceTest {
 
         StepVerifier.create(dishService.update(DishCreator.createUpdatedDish()))
                 .expectSubscription()
-                .expectError(DishNotFoundException::class.java)
+                .expectError(ResponseStatusException::class.java)
                 .verify()
     }
 

@@ -32,12 +32,7 @@ class ConstraintValidatorHandler {
         val result = ex.bindingResult
         val fieldErrors = result.fieldErrors
 
-        val timestamp = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT)
-
         val error = FieldError(
-                timestamp,
-                "/${result.objectName}",
-                HttpStatus.BAD_REQUEST.value(),
                 "A validation error happened!"
         )
 
@@ -49,7 +44,7 @@ class ConstraintValidatorHandler {
     }
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    class FieldError(val timestamp: String, val path: String, val status: Int, val message: String) {
+    class FieldError(val message: String) {
 
         val errors: MutableList<CustomFieldError> = ArrayList()
 

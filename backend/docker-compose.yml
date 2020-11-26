@@ -3,11 +3,12 @@ services:
   app:
     container_name: app-gourmet
     image: app-gourmet
-    build: ./
+    build: .
     ports:
       - "8080:8080"
     depends_on:
       - dbpostgresql
+      - sonic
     environment:
       DB_HOST: 172.29.64.1
       DB_PORT: 5432
@@ -21,8 +22,6 @@ services:
     container_name: postgres
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    expose:
-      - "5432"
     ports:
       - "5432:5432"
     environment:
@@ -34,8 +33,6 @@ services:
     container_name: sonic
     ports:
     - "1491:1491"
-    expose:
-      - "1491"
     volumes:
       - ./sonic/store:/var/lib/sonic/store
       - ./sonic/sonic.cfg:/etc/sonic.cfg

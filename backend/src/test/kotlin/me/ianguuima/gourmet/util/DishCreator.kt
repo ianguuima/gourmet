@@ -4,6 +4,8 @@ import me.ianguuima.gourmet.models.Dish
 
 class DishCreator {
 
+    // object modder, object mapper
+
     companion object {
 
         fun createDish() : Dish {

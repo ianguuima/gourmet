@@ -1,7 +1,6 @@
 package me.ianguuima.gourmet.integration
 
 import com.nhaarman.mockito_kotlin.any
-import me.ianguuima.gourmet.exceptions.DishNotFoundException
 import me.ianguuima.gourmet.models.Dish
 import me.ianguuima.gourmet.repositories.DishRepository
 import me.ianguuima.gourmet.services.DishService
@@ -18,11 +17,11 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.context.annotation.Import
-import org.springframework.context.annotation.ImportResource
 import org.springframework.http.MediaType
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.web.reactive.function.BodyInserters
+import org.springframework.web.server.ResponseStatusException
 import reactor.core.publisher.Mono
 
 
@@ -104,7 +103,7 @@ class DishControllerIT {
                 .uri("/dish/{id}", 1)
                 .exchange()
                 .expectStatus().isNotFound
-                .expectBody<DishNotFoundException>()
+                .expectBody<ResponseStatusException>()
     }
 
     @Test
@@ -147,7 +146,7 @@ class DishControllerIT {
                 .uri("/dish/{id}", 1)
                 .exchange()
                 .expectStatus().isNotFound
-                .expectBody<DishNotFoundException>()
+                .expectBody<ResponseStatusException>()
     }
 
 
