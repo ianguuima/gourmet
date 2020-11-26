@@ -2,7 +2,10 @@ package me.ianguuima.gourmet.services
 
 import com.github.twohou.sonic.ChannelFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
+import java.lang.NullPointerException
 import java.util.ArrayList
 
 
@@ -28,19 +31,24 @@ class SonicService {
     fun add(id: Long, value: String) {
         val factory = getChannelFactory()
 
-        val ingestChannel = factory.newIngestChannel()
+        val ingest = factory.newIngestChannel()
         val control = factory.newControlChannel()
 
-        ingestChannel.push(collection, bucket, "$id", value)
+        ingest.push(collection, bucket, "dish:$id", value)
 
         control.consolidate()
+
+        ingest.quit()
+        control.quit()
     }
 
     fun remove(id : Long) {
         val factory = getChannelFactory()
-        val ingestChannel = factory.newIngestChannel()
+        val ingest = factory.newIngestChannel()
 
-        ingestChannel.flusho(collection, bucket, "$id")
+        ingest.flusho(collection, bucket, "dish:$id")
+
+        ingest.quit()
     }
 
     fun suggest(term: String): ArrayList<String> {
@@ -54,7 +62,11 @@ class SonicService {
         val factory = getChannelFactory()
         val search = factory.newSearchChannel()
 
-        return search.query(collection, bucket, term)
+        try {
+            return search.query(collection, bucket, term)
+        } catch (ex : NullPointerException) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        }
     }
 
     fun getChannelFactory() = ChannelFactory(address, port, password, connectionTimeOut, readTimeOut)
