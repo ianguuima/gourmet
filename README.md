@@ -1,40 +1,20 @@
 # Gourmet
 
-Front-end da aplicação. Não adianta ter uma API bacana se não tem um front bonitinho pra consumir, não é mesmo? 
+O aplicativo foi feito em 48 horas contando com o back-end e o front-end da aplicação. Entretanto, o foco se resume apenas ao back-end. O front-end foi charme 😆.
+
+
+## 🤔 Overall do Projeto e Considerações <a name="overall"></a>
+
+O desafio da prova era relativamente simples, portanto, tentei transformar toda a ideia conceitual em algo mais completo. Há alguns usos exagerados e alguns comentários que fiz em cada parte dessa prova ressaltando alguns problemas e escolhas que tive que fazer no caminho.
 
 ## ⚙ Ferramentas Utilizadas
 
-#### 🌀 React
-A escolha foi feita baseada em minha experiência pessoal. Lido melhor com o React e estou familiarizado com o framework. Entretanto a aplicação poderia ser consumida
-pelo Vue ou Angular que também ficaria legal.
+Foram utilizadas mais de meia-duzia de ferramentas para compor todo o ecossistema dessa aplicação. Mais detalhes das escolhas e motivações para cada uma delas, você pode conferir acessando a pasta de cada respectiva área.
 
-#### ⚡ Typescript
-Linguagens fracamente tipadas correm o risco de atribuir um valor errado e também fica muito: "Aceito qualquer coisa". Gosto de estar no controle do meu código e ter
-certeza que ele só vai receber o que eu defini que ele vai receber. E o Typescript, como uma linguagem bem tipada, encaixou bem nesse projeto.
+* [Back-end](https://github.com/ianguuima/gourmet/tree/master/backend)
+* [Front-end](https://github.com/ianguuima/gourmet/tree/master/backend)
 
-#### 🅰 Axios
-Utilizei o Axios para consumir o end-point da minha API. Ele foi simples de usar e de fácil acesso.
 
-## 🤔 Overall do Projeto e Considerações <a name="overall"></a>
-A stack React + Typescript + Axios encaixa muito bem para aplicação simples. A partir do momento em que a aplicação começa a crescer, a utilização de um bom cacheamento
-local e um bom gerenciador de estado como o [Redux](https://redux.js.org/) se faz necessária.
+## Sobre
 
-## ⚒ Executando a Aplicação <a name="running"></a>
-
-Executar uma aplicação React é muito simples. O tutorial conta com dois passos que te auxiliarão a compilar o projeto.
-
-### 1 - Clone o repositório na sua máquina
-
-```git
-git clone https://github.com/ianguuima/gourmet.git
-or
-git clone https://github.com/ianguuima/gourmet.git && cd front-end
-```
-
-### 2 - Execute o comando para executar o projeto em localhost
-
-```git
-yarn start
-or
-npm start
-```
+O projeto foi criado por [Ian Guimarães](https://www.linkedin.com/in/ianguuima/). Para conhecer outros projetos criados por mim, [clique aqui](https://github.com/ianguuima)
