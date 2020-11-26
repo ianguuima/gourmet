@@ -40,6 +40,7 @@ class DishService(
             ).cache()
 
 
+    @CacheEvict(cacheNames = [cacheName], key = "#dish.id")
     fun save(dish: Dish): Mono<Dish> {
         return dishRepository.existsByNameIgnoreCase(dish.name)
                 .flatMap {
